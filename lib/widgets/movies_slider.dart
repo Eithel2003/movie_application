@@ -5,11 +5,11 @@ import 'package:movie_application/models/movie.dart';
 
 class MoviesSlider extends StatelessWidget {
   const MoviesSlider({
-    super.key,
+    Key? key,
     required this.snapshot,
     required this.toggleFavorite,
     required this.favoriteMovieIds,
-  });
+  }) : super(key: key);
 
   final AsyncSnapshot<List<Movie>> snapshot;
   final Function(int) toggleFavorite;
@@ -31,6 +31,8 @@ class MoviesSlider extends StatelessWidget {
         itemBuilder: (context, index) {
           final movie = snapshot.data![index];
           final isFavorite = favoriteMovieIds.contains(movie.id);
+          final showFavoriteIcon = !movie.isUpcoming; 
+
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: GestureDetector(
@@ -56,19 +58,20 @@ class MoviesSlider extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Positioned(
-                    top: 8,
-                    right: 8,
-                    child: GestureDetector(
-                      onTap: () {
-                        toggleFavorite(movie.id);
-                      },
-                      child: Icon(
-                        isFavorite ? Icons.favorite : Icons.favorite_border,
-                        color: const Color.fromARGB(255, 17, 17, 215),
+                  if (showFavoriteIcon)
+                    Positioned(
+                      top: 8,
+                      right: 8,
+                      child: GestureDetector(
+                        onTap: () {
+                          toggleFavorite(movie.id);
+                        },
+                        child: Icon(
+                          isFavorite ? Icons.favorite : Icons.favorite_border,
+                          color: Colors.blue, 
+                        ),
                       ),
                     ),
-                  ),
                 ],
               ),
             ),

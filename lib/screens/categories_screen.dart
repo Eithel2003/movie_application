@@ -6,6 +6,7 @@ import 'package:movie_application/widgets/movies_slider.dart';
 
 class CategoriesScreen extends StatefulWidget {
   const CategoriesScreen({super.key});
+
   @override
   State<CategoriesScreen> createState() => _CategoriesScreenState();
 }
@@ -13,7 +14,7 @@ class CategoriesScreen extends StatefulWidget {
 class _CategoriesScreenState extends State<CategoriesScreen> {
   late Future<List<dynamic>> genres;
   Map<int, Future<List<Movie>>> genreMovies = {};
-  Set<int> favoriteMovieIds = {}; // Aquí deberías manejar tus IDs de películas favoritas
+  Set<int> favoriteMovieIds = {}; 
 
   @override
   void initState() {
@@ -25,7 +26,6 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       }
     });
   }
-
   void toggleFavorite(int movieId) {
     setState(() {
       if (favoriteMovieIds.contains(movieId)) {
@@ -67,9 +67,12 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                           return Center(child: Text(genreSnapshot.error.toString()));
                         } else if (genreSnapshot.hasData) {
                           return MoviesSlider(
-                            snapshot: genreSnapshot,
-                            toggleFavorite: toggleFavorite,
-                            favoriteMovieIds: favoriteMovieIds,
+                            snapshot: AsyncSnapshot<List<Movie>>.withData(
+                              ConnectionState.done,
+                              genreSnapshot.data!,
+                            ),
+                            toggleFavorite: toggleFavorite, 
+                            favoriteMovieIds: favoriteMovieIds, 
                           );
                         } else {
                           return const Center(child: CircularProgressIndicator());
