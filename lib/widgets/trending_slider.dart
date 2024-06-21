@@ -9,7 +9,7 @@ class TrendingSlider extends StatelessWidget {
 
   const TrendingSlider({
     super.key,
-    required this.snapshot,
+    required this.snapshot, required Set<int> favoriteMovieIds, required void Function(int movieId) toggleFavorite,
   });
 
   @override
